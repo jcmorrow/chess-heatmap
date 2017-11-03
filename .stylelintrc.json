@@ -1,0 +1,6 @@
+{
+  "extends": "stylelint-config-recommended",
+  "rules": {
+    "no-eol-whitespace": true
+  }
+}
