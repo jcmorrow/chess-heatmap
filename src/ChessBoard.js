@@ -1,85 +1,54 @@
 import React, { Component } from 'react';
+import _ from 'underscore';
 import Fen from './Fen';
-import Pieces from './Pieces';
+import Move from './Move';
+import MoveForm from './MoveForm';
+import Pgn from './Pgn';
+import Rank from './Rank';
+
+const magnusCarlsenFEN = 'r4bk1/5pp1/1p1p4/8/4Pp1P/1q3P2/3RQ2P/3R2K1 b - - 1 37';
+const startingFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
 
 class ChessBoard extends Component {
+  constructor(props) {
+    super(props);
+
+    let spaces = Fen.parse(startingFEN);
+    this.state = { spaces, nextMove: '' };
+
+    this.deletePieceOn = this.deletePieceOn.bind(this);
+    this.handleMove = this.handleMove.bind(this);
+  }
+
   render() {
+    this.calculateMoves();
     return (
       <div className="chess-board">
-        {this.renderSpaces()}
+        {_.range(8).map((r) => (
+          <Rank onSpaceClick={this.deletePieceOn} key={r}
+            spaces={this.state.spaces.slice(r * 8, r * 8 + 8)} />
+        ))}
+        <MoveForm handleMove={this.handleMove} />
       </div>
     );
   }
 
+  calculateMoves() {
+    let possibleMoves = Move.possibleMoves(this.state.spaces);
+    for (let space of this.state.spaces) {
+      space.possibleMoves = possibleMoves[space.index];
+    }
+  }
+
   deletePieceOn(index) {
-    this.props.spaces[index].piece = null;
-    this.props.spaces[index].svg = null;
+    this.state.spaces[index].piece = null;
     this.forceUpdate();
   }
 
-  renderSpaces() {
-    let spaces = [];
-    let possibleMoves = ChessBoard.countPossibleMoves(this.props.spaces);
-    for (let i = 0; i < 9; i++) {
-      spaces.push(<div key={i} className="rank">
-        {this.props.spaces.slice(i * 8, i * 8 + 8).map(
-          (space, c) => {
-            let spaceStyle = {
-              backgroundColor: this.spaceColor(space.color),
-            };
-            let heatMapStyle = {
-              backgroundColor: this.redShade(possibleMoves[space.index]),
-            };
-            return (
-              <div onClick={() => { this.deletePieceOn(space.index); } } style={spaceStyle} key={space.index} {...space} className="space" >
-                <div className="heatmap" style={heatMapStyle}>
-                </div>
-                {this.svg(space.svg)}
-              </div>
-            );
-          }
-        )}
-      </div>);
-    }
-    return spaces;
-  }
-
-  svg(svg) {
-    return <img src={svg} />
-  }
-
-  static countPossibleMoves(spaces) {
-    let possibleMoves = Array(64).fill(0);
-    for (let space of spaces) {
-      if (space.piece) {
-        for (let possibleMove of Pieces.possibleMoves(space, spaces)) {
-          possibleMoves[possibleMove] += 1;
-        }
-      }
-    }
-    return possibleMoves;
-  }
-
-  redShade(degree) {
-    return 'rgba(255, 0, 0, ' + degree * .1 + ')';
-  }
-
-  spaceColor(whiteOrBlack) {
-    if (whiteOrBlack === 'white') {
-      return 'rgba(255, 255, 255, 1)';
-    } else {
-      return 'rgba(0, 0, 255, .00)';
-    }
+  handleMove(move) {
+    let newSpaces = Pgn.move(this.state.spaces, move);
+    this.setState({ spaces: newSpaces, nextMove: '' });
   }
 }
-
-const magnusCarlsenFEN = 'r4bk1/5pp1/1p1p4/8/4Pp1P/1q3P2/3RQ2P/3R2K1 b - - 1 37';
-const startingFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
-const bishopFEN = '8/8/8/5P2/4B3/3P1P2/8/8';
-const rookFEN = '8/8/8/8/8/8/r7/8';
-
-ChessBoard.defaultProps = {
-  spaces: Fen.parse(magnusCarlsenFEN),
-};
 
 export default ChessBoard;

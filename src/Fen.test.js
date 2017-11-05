@@ -54,4 +54,3 @@ it('can parse a board with pieces on it', () => {
     },
   ]);
 });
-
