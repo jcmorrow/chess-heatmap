@@ -13,6 +13,7 @@ class ChessBoard extends Component {
 
   deletePieceOn(index) {
     this.props.spaces[index].piece = null;
+    this.props.spaces[index].svg = null;
     this.forceUpdate();
   }
 
@@ -31,9 +32,9 @@ class ChessBoard extends Component {
             };
             return (
               <div onClick={() => { this.deletePieceOn(space.index); } } style={spaceStyle} key={space.index} {...space} className="space" >
-                {space.piece}
                 <div className="heatmap" style={heatMapStyle}>
                 </div>
+                {this.svg(space.svg)}
               </div>
             );
           }
@@ -41,6 +42,10 @@ class ChessBoard extends Component {
       </div>);
     }
     return spaces;
+  }
+
+  svg(svg) {
+    return <img src={svg} />
   }
 
   static countPossibleMoves(spaces) {

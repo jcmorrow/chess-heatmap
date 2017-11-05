@@ -18,10 +18,18 @@ class Pieces {
     const vertFunc = this.moveVertical(vertical);
     const newSpaceIndex = horFunc(vertFunc(space));
     const newSpace = spaces[newSpaceIndex];
-    if (newSpace.piece && newSpace.piece.color === piece.color) {
+    if (newSpace.piece) { // && this.colorOf(newSpace.piece) === this.colorOf(piece)) {
       return -1;
     }
     return newSpaceIndex;
+  }
+
+  static colorOf(piece) {
+    if (piece.match(/[a-z]/)) {
+      return 'BLACK';
+    } else if (piece.match(/[A-Z]/)) {
+      return 'WHITE';
+    }
   }
 
   static moveRecursive(horizontal, vertical, space, spaces) {

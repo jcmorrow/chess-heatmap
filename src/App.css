@@ -9,13 +9,15 @@
 
 .space {
   border: 1px solid gray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   float: left;
   font-size: 12px;
   height: 60px;
   position: relative;
   width: 60px;
 }
-
 .heatmap {
   height: 100%;
   left: 0;
