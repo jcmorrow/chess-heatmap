@@ -1,20 +1,29 @@
+import classnames from 'classnames';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Svg from './Svg';
 
-function heatMapStyle(space) {
-  return {
-    backgroundColor: 'rgba(255, 0, 0, ' + space.possibleMoves * .1 + ')',
-  };
-}
+const heatMapStyle = (possibleMoves) => ({
+  backgroundColor: 'rgba(255, 0, 0, ' + possibleMoves * .1 + ')',
+});
 
+const classes = (props) => (
+  classnames('space', props.color,  { selected: props.selected })
+);
 
-export default (props) => (
-  <div
-    className={'space ' + props.space.color}
-    key={props.space.index}
-    onClick={props.onClick}
-  >
-    <div className="heatmap" style={heatMapStyle(props.space)} />
-    <img alt={props.space.piece} src={Svg.pieces[props.space.piece]} />
+const Space = (props) => (
+  <div className={classes(props)} key={props.index} onClick={props.onClick} >
+    <div className="heatmap" style={heatMapStyle(props.possibleMoves)} />
+    <img alt={props.piece} src={Svg.pieces[props.piece]} />
   </div>
 );
+
+Space.propTypes = {
+  piece: PropTypes.string,
+  index: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired,
+  color: PropTypes.string.isRequired,
+  possibleMoves: PropTypes.number.isRequired,
+};
+
+export default Space;

@@ -35,6 +35,13 @@ it('can parse a board with no pieces on it', () => {
   expect(spaces.length).toEqual(64);
 });
 
+it('can create a FEN from a set of spaces', () => {
+  let spaces = Array(64).fill({ piece: null });
+  spaces[0] = { piece: 'r' };
+
+  expect(Fen.create(spaces)).toEqual('r7/8/8/8/8/8/8/8');
+});
+
 it('can parse a board with pieces on it', () => {
   let spaces = Fen.parse('r7/8/8/8/8/8/8/8 w KQkq - 0 1');
   expect(spaces.slice(0,2)).toEqual([

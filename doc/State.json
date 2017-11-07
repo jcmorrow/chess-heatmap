@@ -1,0 +1,14 @@
+{
+  "fen": "8/8/8/8/8/8/8/8 w KQkq - 0 1",
+  "pgnHistory": [],
+  "spaces": [
+    {
+      "color": [ "white" ],
+      "file": "a",
+      "index": 0,
+      "piece": "r",
+      "possibleMoves": 0,
+      "rank": 8
+    }
+  ]
+}

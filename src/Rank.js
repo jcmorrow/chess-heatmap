@@ -5,9 +5,9 @@ export default (props) => {
   return (<div className="rank">
     {props.spaces.map((space) => (
       <Space
+        {...space}
         key={space.index}
-        space={space}
-        onClick={() => (props.onSpaceClick(space.index))}
+        onClick={() => (props.clickOnSpace(space.index))}
       />
     ))}
   </div>);

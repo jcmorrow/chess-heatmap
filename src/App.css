@@ -2,9 +2,28 @@
   box-sizing: border-box;
 }
 
-.chess-board {
+.container {
   margin: 50px auto;
   width: 480px;
+}
+
+.chess-board:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.rank {
+  clear: both;
+  float: left;
+}
+
+form {
+  margin-top: 1rem;
+}
+
+input {
+  width: 100%;
 }
 
 .space {
@@ -25,15 +44,14 @@
   background-size: 10%;
 }
 
+.space.selected {
+  border-width: 3px;
+}
+
 .heatmap {
   height: 100%;
   left: 0;
   position: absolute;
   top: 0;
   width: 100%;
-}
-
-.rank {
-  clear: both;
-  float: left;
 }

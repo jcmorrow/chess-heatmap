@@ -1,9 +1,11 @@
+import _ from 'underscore';
+
 const ALPHABET = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' ];
 
 class Fen {
   static index(algebraicPosition) {
     const file = ALPHABET.indexOf(algebraicPosition.charAt(0));
-    const rank = (8 - parseInt(algebraicPosition.charAt(1))) * 8;
+    const rank = (8 - parseInt(algebraicPosition.charAt(1), 10)) * 8;
     return rank + file;
   };
 
@@ -27,6 +29,18 @@ class Fen {
       }
     }
     return spaces;
+  }
+
+  static create(spaces) {
+    const coagulateOnes = (string) => {
+      return string.replace(/(1+)/g, (match) => (match.length));
+    };
+
+    let ranks = _.range(8).map((r) => (spaces.slice(r * 8, r * 8 + 8)));
+    return ranks.map(rank => {
+      let fenString = rank.map((space) => (space.piece || 1)).join('');
+      return coagulateOnes(fenString);
+    }).join('/');
   }
 
   static spaceObjectFromIndex(i, piece) {

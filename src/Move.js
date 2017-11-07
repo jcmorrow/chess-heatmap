@@ -13,7 +13,12 @@ class Move {
         }
       }
     }
-    return possibleMoves;
+
+    return spaces.map((space) => (
+      Object.assign({}, space, {
+        possibleMoves: possibleMoves[space.index],
+      })
+    ));
   }
 
   static possibleMovesForSpace(space, spaces) {
@@ -73,7 +78,7 @@ class Move {
   }
 
   static moveVertical(increment) {
-    return (space) => space + (-8 * increment);
+    return (space) => space - (8 * increment);
   }
   static moveHorizontal(increment) {
     return (space) => space + increment;
@@ -115,9 +120,7 @@ class Move {
 
   static colorOfPiece(space) {
     if (space.piece) {
-      if (space.piece.match(/[a-z]/)) {
-        return 'black';
-      } else { return 'white'; }
+      return space.piece.match(/[a-z]/) ? 'black' : 'white';
     }
   }
 
