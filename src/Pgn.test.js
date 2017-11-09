@@ -5,8 +5,8 @@ it('produces a new FEN based on a previous set of spaces and a valid move', () =
   let spaces = Fen.parse('r7/8/8/8/8/8/8/8 w KQkq - 0 1');
   let newSpaces = Pgn.move(spaces, 'ra1');
 
-  expect(newSpaces[Fen.index('a8')].piece).toEqual(null);
   expect(newSpaces[Fen.index('a1')].piece).toEqual('r');
+  expect(newSpaces[Fen.index('a8')].piece).toEqual(null);
 });
 
 it('return the original FEN when given an invalid move', () => {

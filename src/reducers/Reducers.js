@@ -1,5 +1,6 @@
 import Move from '../Move';
 import Fen from '../Fen';
+import Heatmap from '../Heatmap';
 import Pgn from '../Pgn';
 import * as Constants from '../Constants';
 
@@ -11,19 +12,22 @@ const initialState = { fen: startingFEN, spaces: [] };
 const chessBoardReducer = (state = initialState, action) => {
   let newSpaces;
   switch (action.type) {
-    case Constants.MOVE:
-      newSpaces = Pgn.move(state.spaces, action.algebraic);
-      break;
     case Constants.SELECT_SPACE:
       let currentlySelectedSpace = state.spaces.find((space) => (space.selected));
-      if ((currentlySelectedSpace && currentlySelectedSpace.piece) &&
-        (Move.possibleMovesForSpace(currentlySelectedSpace, state.spaces).find(
-          (space) => (space === action.index)
-        ))) {
-        newSpaces = Pgn.move(
-          state.spaces,
-          `${currentlySelectedSpace.piece}${Fen.algebraic(action.index)}`
-        );
+      if (currentlySelectedSpace &&
+        currentlySelectedSpace.moves.includes(action.index)
+      ) {
+        state.spaces[action.index].piece = currentlySelectedSpace.piece;
+        currentlySelectedSpace.piece = null;
+        currentlySelectedSpace.selected = false;
+        newSpaces = state.spaces;
+      } else if (currentlySelectedSpace &&
+        currentlySelectedSpace.captures.includes(action.index)
+      ) {
+        state.spaces[action.index].piece = currentlySelectedSpace.piece;
+        currentlySelectedSpace.piece = null;
+        newSpaces = state.spaces;
+        currentlySelectedSpace.selected = false;
       } else {
         newSpaces = state.spaces.map((space) => (
           Object.assign({}, space, { selected: (space.index === action.index) })
@@ -38,7 +42,7 @@ const chessBoardReducer = (state = initialState, action) => {
   }
   return Object.assign({}, state, {
     fen: Fen.create(newSpaces),
-    spaces: Move.possibleMoves(newSpaces),
+    spaces: Heatmap.threatenMap(Move.allMoves(newSpaces)),
   });
 };
 

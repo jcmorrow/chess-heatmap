@@ -6,11 +6,10 @@ class Pgn {
     let newSpaces = spaces.slice();
     let newSpace = move.slice(1, 3);
     let pieceToMove = spaces.find((space) => {
-      // this won't work for pawn moves, we can do some regex magic to split
-      // those out
       return (
         space.piece === move.charAt(0) &&
-        Move.possibleMovesForSpace(space, spaces)
+        Move.moves(space, spaces)
+          .moves
           .map((pm) => Fen.algebraic(pm))
           .includes(move.slice(1, 3))
       );
