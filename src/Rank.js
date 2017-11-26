@@ -8,6 +8,7 @@ export default (props) => {
         {...space}
         key={space.index}
         onClick={() => (props.clickOnSpace(space.index))}
+        showPieces={props.showPieces}
       />
     ))}
   </div>);

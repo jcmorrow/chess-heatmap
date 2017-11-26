@@ -1,8 +1,14 @@
 import ChessBoard from './ChessBoard';
 import { connect } from 'react-redux';
-import { move, selectSpace, changeFen } from './actions/Actions';
+import { move, selectSpace, changeFen, toggleSetting } from './actions/Actions';
 
-const mapStateToProps = (state) => ({ spaces: state.spaces, fen: state.fen });
+const mapStateToProps = (state) => (
+  {
+    spaces: state.spaces,
+    fen: state.fen,
+    settings: state.settings,
+  }
+);
 
 const mapDispatchToProps = (dispatch) => ({
   clickOnSpace: (index) => {
@@ -10,6 +16,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   handleFenChange: (newFen) => {
     dispatch(changeFen(newFen));
+  },
+  clickOnSetting: (setting) => {
+    dispatch(toggleSetting(setting));
   },
   move: (algebraicMove) => {
     dispatch(move(algebraicMove));

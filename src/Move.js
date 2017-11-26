@@ -1,5 +1,4 @@
-import _ from 'underscore';
-import MoveUtilities from './MoveUtilities';
+import { color, lambda } from './Utilities';
 
 class Move {
   static allMoves(spaces) {
@@ -17,9 +16,6 @@ class Move {
       );
     }
 
-    const color = (piece) => (
-      piece.match(/[a-z]/) ? 'black' : 'white'
-    );
     const moveFunc = this.MOVES[space.piece];
 
     let moves = moveFunc.call(this, space.index, spaces, false).sort();
@@ -37,15 +33,15 @@ class Move {
   static blackPawn(space, spaces, capture = false) {
     let possibleMoves = [];
     if (capture) {
-      return MoveUtilities.lambda(1, -1, false, false, true, false)(space, spaces, capture);
+      return lambda(1, -1, false, false, true, false)(space, spaces, capture);
     } else {
       if (spaces[space].rank === 7) {
         possibleMoves.push(
-          MoveUtilities.lambda(0, -2, false, false, false, false)(space, spaces, capture)[0]
+          lambda(0, -2, false, false, false, false)(space, spaces, capture)[0]
         );
       }
       possibleMoves.push(
-        MoveUtilities.lambda(0, -1, false, false, false, false)(space, spaces, capture)[0]
+        lambda(0, -1, false, false, false, false)(space, spaces, capture)[0]
       );
     }
     return possibleMoves;
@@ -54,26 +50,26 @@ class Move {
   static whitePawn(space, spaces, capture = false) {
     let possibleMoves = [];
     if (capture) {
-      return MoveUtilities.lambda(1, 1, false, false, true, false)(space, spaces, capture);
+      return lambda(1, 1, false, false, true, false)(space, spaces, capture);
     } else {
       if (spaces[space].rank === 2) {
         possibleMoves.push(
-          MoveUtilities.lambda(0, 2, false, false, false, false)(space, spaces, capture)[0]
+          lambda(0, 2, false, false, false, false)(space, spaces, capture)[0]
         );
       }
       possibleMoves.push(
-        MoveUtilities.lambda(0, 1, false, false, false, false)(space, spaces, capture)[0]
+        lambda(0, 1, false, false, false, false)(space, spaces, capture)[0]
       );
     }
     return possibleMoves;
   }
 
   static bishop(space, spaces, capture = false) {
-    return MoveUtilities.lambda(1, 1, true, false, true, true)(space, spaces, capture);
+    return lambda(1, 1, true, false, true, true)(space, spaces, capture);
   }
 
   static rook(space, spaces, capture = false) {
-    return MoveUtilities.lambda(1, 0, true, true, true, true)(space, spaces, capture);
+    return lambda(1, 0, true, true, true, true)(space, spaces, capture);
   }
 
   static queen(space, spaces, capture = false) {
@@ -82,12 +78,12 @@ class Move {
   }
 
   static knight(space, spaces, capture) {
-    return MoveUtilities.lambda(1, 2, false, true, true, true)(space, spaces, capture);
+    return lambda(1, 2, false, true, true, true)(space, spaces, capture);
   }
 
   static king(space, spaces, capture) {
-    return MoveUtilities.lambda(1, 1, false, false, true, true)(space, spaces, capture).concat(
-      MoveUtilities.lambda(1, 0, false, true, true, true)(space, spaces, capture));
+    return lambda(1, 1, false, false, true, true)(space, spaces, capture).concat(
+      lambda(1, 0, false, true, true, true)(space, spaces, capture));
   }
 
 }

@@ -5,5 +5,5 @@ import Fen from './Fen';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<ChessBoard spaces={[]} />, div);
+  ReactDOM.render(<ChessBoard spaces={[]} settings={{showSpaces: true}}/>, div);
 });

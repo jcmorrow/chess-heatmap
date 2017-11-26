@@ -5,6 +5,7 @@
 .container {
   margin: 50px auto;
   width: 480px;
+  margin-bottom: 10px;
 }
 
 .chess-board:after {
@@ -39,9 +40,24 @@ input {
 }
 
 .space.black {
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   /* background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzMnLz4KPC9zdmc+"); */
   background-size: 10%;
+}
+.space.black::before,
+.space.black::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.space.black::before {
+    border-width: 6px;
+    border-left-color: #eee;
+    border-top-color: #eee;
 }
 
 .space.selected {
@@ -54,4 +70,11 @@ input {
   position: absolute;
   top: 0;
   width: 100%;
+}
+
+#settings {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
 }

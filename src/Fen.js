@@ -1,18 +1,20 @@
 import _ from 'underscore';
-
-const ALPHABET = [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' ];
+import { BOARD_SIZE, FILES } from './Constants';
+import { file, rank, spaceColor } from './Utilities';
 
 class Fen {
-  static index(algebraicPosition) {
-    const file = ALPHABET.indexOf(algebraicPosition.charAt(0));
-    const rank = (8 - parseInt(algebraicPosition.charAt(1), 10)) * 8;
+  static index(algebraic) {
+    const file = FILES.indexOf(algebraic.charAt(0));
+    const rank = (BOARD_SIZE - parseInt(algebraic.charAt(1), 10)) * BOARD_SIZE;
+
     return rank + file;
   };
 
-  static algebraic(indexPosition) {
-    const file = ALPHABET[indexPosition % 8];
-    const rank = 8 - Math.floor(indexPosition / 8);
-    return file + rank;
+  static algebraic(index) {
+    const fileInt = FILES[file(index)];
+    const rankInt = rank(index);
+
+    return fileInt + rankInt;
   }
 
   static parse(fen) {
@@ -22,12 +24,13 @@ class Fen {
       const nextChar = positionString.charAt(s);
       if (nextChar.match(/[bknpqrBKNPQR]/)) {
         spaces.push(this.spaceObjectFromIndex(spaces.length, nextChar));
-      } else if (nextChar.match(/[0-9]/)) {
+      } else if (nextChar.match(/[0-8]/)) {
         for (let i = 0; i < nextChar; i++) {
           spaces.push(this.spaceObjectFromIndex(spaces.length, null));
         }
       }
     }
+
     return spaces;
   }
 
@@ -36,33 +39,26 @@ class Fen {
       return string.replace(/(1+)/g, (match) => (match.length));
     };
 
-    let ranks = _.range(8).map((r) => (spaces.slice(r * 8, r * 8 + 8)));
-    return ranks.map(rank => {
-      let fenString = rank.map((space) => (space.piece || 1)).join('');
-      return coagulateOnes(fenString);
-    }).join('/');
+    let ranks = _.range(BOARD_SIZE).map((r) => (
+      spaces.slice(r * BOARD_SIZE, r * BOARD_SIZE + BOARD_SIZE))
+    );
+    return ranks.map(rank => (
+      coagulateOnes(
+        rank.map(
+          (space) => (space.piece || 1)
+        ).join('')
+      )
+    )).join('/');
   }
 
   static spaceObjectFromIndex(i, piece) {
     return {
-      color: this.colorFromIndex(i),
-      file: this.fileFromIndex(i),
+      color: spaceColor(i),
+      file: FILES[file(i)],
       index: i,
       piece,
-      rank: this.rankFromIndex(i),
+      rank: rank(i),
     };
-  }
-
-  static fileFromIndex(i) {
-    return ALPHABET[(i % 8)];
-  }
-
-  static rankFromIndex(i) {
-    return 8 - Math.floor(i / 8);
-  }
-
-  static colorFromIndex(i) {
-    return ((i + (this.rankFromIndex(i) % 2)) % 2) ? 'black' : 'white';
   }
 }
 

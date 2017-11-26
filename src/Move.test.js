@@ -1,6 +1,6 @@
 import Move from './Move';
-import MoveUtilities from './MoveUtilities';
 import Fen from './Fen';
+import { invalidMove } from './Utilities';
 
 it('calculates moves, captures, and threatens for a pawn', () => {
   let spaces = Fen.parse('8/8/8/8/8/2p5/1P6/8 w KQkq - 0 1');
@@ -37,36 +37,36 @@ it('calculates moves, captures, and threatens for a bishop', () => {
 });
 
 it('rejects invalid moves', () => {
-  expect(MoveUtilities.invalidMove(1, 0, 7)).toEqual(true);
-  expect(MoveUtilities.invalidMove(1, 0, 6)).toEqual(false);
+  expect(invalidMove(1, 0, 7)).toEqual(true);
+  expect(invalidMove(1, 0, 6)).toEqual(false);
 
-  expect(MoveUtilities.invalidMove(1, 0, 63)).toEqual(true);
-  expect(MoveUtilities.invalidMove(1, 0, 62)).toEqual(false);
+  expect(invalidMove(1, 0, 63)).toEqual(true);
+  expect(invalidMove(1, 0, 62)).toEqual(false);
 
-  expect(MoveUtilities.invalidMove(-1, 0, 0)).toEqual(true);
-  expect(MoveUtilities.invalidMove(-1, 0, 1)).toEqual(false);
+  expect(invalidMove(-1, 0, 0)).toEqual(true);
+  expect(invalidMove(-1, 0, 1)).toEqual(false);
 
-  expect(MoveUtilities.invalidMove(-1, 0, 56)).toEqual(true);
-  expect(MoveUtilities.invalidMove(-1, 0, 57)).toEqual(false);
+  expect(invalidMove(-1, 0, 56)).toEqual(true);
+  expect(invalidMove(-1, 0, 57)).toEqual(false);
 
-  expect(MoveUtilities.invalidMove(0, -1, 56)).toEqual(true);
-  expect(MoveUtilities.invalidMove(0, -1, 48)).toEqual(false);
+  expect(invalidMove(0, -1, 56)).toEqual(true);
+  expect(invalidMove(0, -1, 48)).toEqual(false);
 
-  expect(MoveUtilities.invalidMove(0, -1, 63)).toEqual(true);
-  expect(MoveUtilities.invalidMove(0, -1, 55)).toEqual(false);
+  expect(invalidMove(0, -1, 63)).toEqual(true);
+  expect(invalidMove(0, -1, 55)).toEqual(false);
 
-  expect(MoveUtilities.invalidMove(0, 1, 7)).toEqual(true);
-  expect(MoveUtilities.invalidMove(0, 1, 0)).toEqual(true);
+  expect(invalidMove(0, 1, 7)).toEqual(true);
+  expect(invalidMove(0, 1, 0)).toEqual(true);
 
-  expect(MoveUtilities.invalidMove(2, 0, 6)).toEqual(true);
-  expect(MoveUtilities.invalidMove(2, 0, 62)).toEqual(true);
+  expect(invalidMove(2, 0, 6)).toEqual(true);
+  expect(invalidMove(2, 0, 62)).toEqual(true);
 
-  expect(MoveUtilities.invalidMove(-2, 0, 1)).toEqual(true);
-  expect(MoveUtilities.invalidMove(-2, 0, 57)).toEqual(true);
+  expect(invalidMove(-2, 0, 1)).toEqual(true);
+  expect(invalidMove(-2, 0, 57)).toEqual(true);
 
-  expect(MoveUtilities.invalidMove(0, -2, 48)).toEqual(true);
-  expect(MoveUtilities.invalidMove(0, -2, 55)).toEqual(true);
+  expect(invalidMove(0, -2, 48)).toEqual(true);
+  expect(invalidMove(0, -2, 55)).toEqual(true);
 
-  expect(MoveUtilities.invalidMove(0, 2, 15)).toEqual(true);
-  expect(MoveUtilities.invalidMove(0, 2, 8)).toEqual(true);
+  expect(invalidMove(0, 2, 15)).toEqual(true);
+  expect(invalidMove(0, 2, 8)).toEqual(true);
 });

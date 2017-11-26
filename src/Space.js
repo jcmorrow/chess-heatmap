@@ -11,10 +11,16 @@ const classes = (props) => (
   classnames('space', props.color,  { selected: props.selected })
 );
 
+const piece = (props) => {
+  if (props.showPieces) {
+    return <img alt={props.piece} src={Svg.pieces[props.piece]} />;
+  };
+};
+
 const Space = (props) => (
   <div className={classes(props)} key={props.index} onClick={props.onClick} >
     <div className="heatmap" style={heatMapStyle(props.possibleMoves)} />
-    <img alt={props.piece} src={Svg.pieces[props.piece]} />
+    {piece(props)}
   </div>
 );
 
