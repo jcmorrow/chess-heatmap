@@ -1,9 +1,9 @@
-import Move from '../Move';
-import Fen from '../Fen';
-import Heatmap from '../Heatmap';
-import * as Constants from '../Constants';
+import Move from "../Move";
+import Fen from "../Fen";
+import Heatmap from "../Heatmap";
+import * as Constants from "../Constants";
 
-const startingFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+const startingFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 const initialState = {
   fen: startingFEN,
@@ -13,34 +13,33 @@ const initialState = {
     showWhiteThreatens: true,
     showBlackThreatens: true,
   },
-  colorToMove: 'white',
+  colorToMove: "white",
 };
 
 const chessBoardReducer = (state = initialState, action) => {
-  const color = (piece) => (
-    piece && piece.match(/[a-z]/) ? 'black' : 'white'
-  );
+  const color = (piece) => (piece && piece.match(/[a-z]/) ? "black" : "white");
   let newSpaces, newSettings, colorToMove;
   switch (action.type) {
     case Constants.SELECT_SPACE:
-      let currentlySelectedSpace = state.spaces.find((space) => (space.selected));
-      if (currentlySelectedSpace &&
+      let currentlySelectedSpace = state.spaces.find((space) => space.selected);
+      if (
+        currentlySelectedSpace &&
         (currentlySelectedSpace.moves.includes(action.index) ||
-          currentlySelectedSpace.captures.includes(action.index)
-        )
+          currentlySelectedSpace.captures.includes(action.index))
       ) {
         state.spaces[action.index].piece = currentlySelectedSpace.piece;
         currentlySelectedSpace.piece = null;
         currentlySelectedSpace.selected = false;
         newSpaces = state.spaces;
-        colorToMove = (state.colorToMove === 'white') ? 'black' : 'white';
+        colorToMove = state.colorToMove === "white" ? "black" : "white";
       } else {
-        newSpaces = state.spaces.map((space) => (
+        newSpaces = state.spaces.map((space) =>
           Object.assign({}, space, {
-            selected: (space.index === action.index &&
-              color(space.piece) === state.colorToMove),
+            selected:
+              space.index === action.index &&
+              color(space.piece) === state.colorToMove,
           })
-        ));
+        );
         colorToMove = state.colorToMove;
       }
       newSettings = state.settings;

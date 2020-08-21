@@ -1,27 +1,29 @@
-import _ from 'underscore';
+import _ from "underscore";
 import {
   BOARD_SIZE,
   BOTTOM_RANK,
   LEFT_FILE,
   RIGHT_FILE,
   TOP_RANK,
-} from './Constants';
+} from "./Constants";
 
-const color = (piece) => (piece && piece.match(/[a-z]/) ? 'black' : 'white');
+const color = (piece) => (piece && piece.match(/[a-z]/) ? "black" : "white");
+
 const spaceColor = (index) => {
   if ((index + (rank(index) % 2)) % 2) {
-    return 'black';
+    return "black";
   } else {
-    return 'white';
+    return "white";
   }
 };
-const file = (index) => (index % BOARD_SIZE);
-const rank = (index) => (BOARD_SIZE - Math.floor(index / BOARD_SIZE));
 
-const moveVertical = (increment) => (
-  (space) => (space - (BOARD_SIZE * increment))
-);
-const moveHorizontal = (increment) => ((space) => (space + increment));
+const file = (index) => index % BOARD_SIZE;
+
+const rank = (index) => BOARD_SIZE - Math.floor(index / BOARD_SIZE);
+
+const moveVertical = (increment) => (space) => space - BOARD_SIZE * increment;
+
+const moveHorizontal = (increment) => (space) => space + increment;
 
 const invalidMove = (h, v, startIndex) => {
   const down = v < 0;
@@ -48,19 +50,19 @@ const lambda = (h, v, recursive, axesRever, reflX, reflY) => {
     moveFunc = move;
   }
   if (reflX) {
-    hValues = _.uniq([ h, -1 * h ]);
+    hValues = _.uniq([h, -1 * h]);
   } else {
-    hValues = [ h ];
+    hValues = [h];
   }
   if (reflY) {
-    vValues = _.uniq([ v, -1 * v ]);
+    vValues = _.uniq([v, -1 * v]);
   } else {
-    vValues = [ v ];
+    vValues = [v];
   }
 
-  return (space, spaces, capture) => (
+  return (space, spaces, capture) =>
     _.flatten(
-      hValues.map((h) => (
+      hValues.map((h) =>
         vValues.map((v) => {
           let possibleMoves = moveFunc.call(this, h, v, space, spaces, capture);
           if (axesRever) {
@@ -70,9 +72,8 @@ const lambda = (h, v, recursive, axesRever, reflX, reflY) => {
           }
           return possibleMoves;
         })
-      ))
-    )
-  );
+      )
+    );
 };
 
 const moveRecursive = (h, v, startIndex, spaces, capture = false) => {
@@ -82,7 +83,9 @@ const moveRecursive = (h, v, startIndex, spaces, capture = false) => {
   while (nextIndex.length > 0) {
     let nextSpace = spaces[nextIndex[0]];
     if (nextSpace.piece) {
-      if (capture) { possibleSpaces.push(nextIndex[0]); }
+      if (capture) {
+        possibleSpaces.push(nextIndex[0]);
+      }
       nextIndex = [];
     } else {
       possibleSpaces.push(nextIndex[0]);
@@ -103,10 +106,10 @@ const move = (horizontal, vertical, startIndex, spaces, capture) => {
 
   const newSpaceIndex = horFunc(vertFunc(startIndex));
 
-  return [ newSpaceIndex ];
+  return [newSpaceIndex];
 
   if (capture || !spaces[newSpaceIndex].piece) {
-    return [ newSpaceIndex ];
+    return [newSpaceIndex];
   } else {
     return [];
   }
