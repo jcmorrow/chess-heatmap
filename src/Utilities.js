@@ -107,12 +107,6 @@ const move = (horizontal, vertical, startIndex, spaces, capture) => {
   const newSpaceIndex = horFunc(vertFunc(startIndex));
 
   return [newSpaceIndex];
-
-  if (capture || !spaces[newSpaceIndex].piece) {
-    return [newSpaceIndex];
-  } else {
-    return [];
-  }
 };
 
 export { color, lambda, spaceColor, rank, file, invalidMove };
